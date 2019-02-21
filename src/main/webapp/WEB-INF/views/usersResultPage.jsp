@@ -21,20 +21,22 @@
               <div class="col-lg-3 bg-white mt-4 mx-3 p-3">
                 <div class="clearfix">
                   <h5 class="float-left">${user[0]}</h5>
-                  <button
-                    class="btn btn-sm btn-primary float-right"
-                    data-username="${activeUser.username}"
-                    data-followee-id="${user[0]}"
-                  >
-                    <c:choose>
-                      <c:when test="${user[3] != null}">
-                        Following
-                      </c:when>
-                      <c:otherwise>
-                        Follow
-                      </c:otherwise>
-                    </c:choose>
-                  </button>
+                  <c:if test="${activeUser.username != user[0]}">
+                    <button
+                      class="btn btn-sm btn-primary float-right"
+                      data-username="${activeUser.username}"
+                      data-followee-id="${user[0]}"
+                    >
+                      <c:choose>
+                        <c:when test="${user[3] == activeUser.username }">
+                          Following
+                        </c:when>
+                        <c:otherwise>
+                          Follow
+                        </c:otherwise>
+                      </c:choose>
+                    </button>
+                  </c:if>
                 </div>
                 <div>${user[2]}</div>
               </div>
@@ -56,16 +58,7 @@
         });
 
         if (btn.textContent.trim() === "Following") {
-          btn.addEventListener("mouseover", e => {
-            btn.classList.remove("btn-primary");
-            btn.classList.add("btn-danger");
-            btn.textContent = "Unfollow";
-          });
-          btn.addEventListener("mouseout", e => {
-            btn.classList.remove("btn-danger");
-            btn.classList.add("btn-primary");
-            btn.textContent = "Following";
-          });
+          followingBtnAnimation(btn);
         }
       });
 
@@ -76,14 +69,48 @@
             "Content-Type": "application/json"
           }),
           method: "POST",
-          body: JSON.stringify({username: e.target.dataset.username, followeeId: e.target.dataset.followeeId})
+          body: JSON.stringify({
+            username: e.target.dataset.username,
+            followeeId: e.target.dataset.followeeId
+          })
         })
-          .then(function(response) {
-            console.log(response.json());
+          .then(res => {
+            console.log(res.json());
+            onSuccess(e);
           })
           .catch(err => {
-            console.log(err);
+            onError(err);
           });
+      }
+
+      function onError(err) {
+        const container = document.querySelector(".container");
+        const errorDiv = document.createElement("div");
+        const textError = document.createTextNode(err);
+
+        errorDiv.appendChild(textError);
+        container.classList.add("alert");
+        container.classList.add("alert-danger");
+
+        container.prepend(errorDiv);
+      }
+
+      function followingBtnAnimation(btn) {
+        btn.addEventListener("mouseover", e => {
+          btn.classList.remove("btn-primary");
+          btn.classList.add("btn-danger");
+          btn.textContent = "Unfollow";
+        });
+        btn.addEventListener("mouseout", e => {
+          btn.classList.remove("btn-danger");
+          btn.classList.add("btn-primary");
+          btn.textContent = "Following";
+        });
+      }
+
+      function onSuccess(e) {
+        e.target.innerText = "Following";
+        followingBtnAnimation(e.target);
       }
     </script>
   </body>

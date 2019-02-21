@@ -72,7 +72,7 @@ public class UserService {
 		return userDao.updateUserPassword(username, oldPassword, newPassword);
 	}
 	
-	public List<Object[]> searchUsers(String terms) {
-		return userDao.searchUsers(terms);
+	public List<Object[]> searchUsers(String terms, String activeUsername) {
+		return userDao.searchUsers(terms, activeUsername);
 	}
 }
