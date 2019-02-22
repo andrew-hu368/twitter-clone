@@ -47,71 +47,113 @@
     </main>
     <jsp:include page="./components/htmlJSScript.jsp" />
     <script>
-      const followBtns = document.querySelectorAll(".btn-sm");
-      followBtns.forEach(btn => {
-        btn.addEventListener("click", e => {
-          e.preventDefault();
+      (function() {
+        const followBtns = document.querySelectorAll(".btn-sm");
+        followBtns.forEach(btn => {
+          btn.addEventListener("click", e => {
+            e.preventDefault();
 
-          if (e.target.innerText === "Follow") {
-            postFollowee(e);
+            if (e.target.innerText === "Follow") {
+              followUser(e);
+            }
+
+            if (
+              e.target.innerText === "Following" ||
+              e.target.innerText === "Unfollow"
+            ) {
+              unfollowUser(e);
+            }
+          });
+
+          if (btn.innerText === "Following") {
+            followingBtnListener(btn);
           }
         });
 
-        if (btn.textContent.trim() === "Following") {
-          followingBtnAnimation(btn);
+        function followUser(e) {
+          fetch("/twitter/users/${activeUser.username}/followees", {
+            headers: new Headers({
+              "Content-Type": "application/json"
+            }),
+            method: "POST",
+            body: JSON.stringify({
+              username: e.target.dataset.username,
+              followeeId: e.target.dataset.followeeId
+            })
+          })
+            .then(res => {
+              onPOSTSuccess(e);
+            })
+            .catch(err => {
+              onError(err);
+            });
         }
-      });
 
-      function postFollowee(e) {
-        console.log(e.target.dataset);
-        fetch("/twitter/users/${activeUser.username}/followees", {
-          headers: new Headers({
-            "Content-Type": "application/json"
-          }),
-          method: "POST",
-          body: JSON.stringify({
-            username: e.target.dataset.username,
-            followeeId: e.target.dataset.followeeId
+        function unfollowUser(e) {
+          fetch("/twitter/users/${activeUser.username}/followees", {
+            headers: new Headers({
+              "Content-Type": "application/json"
+            }),
+            method: "DELETE",
+            body: JSON.stringify({
+              username: e.target.dataset.username,
+              followeeId: e.target.dataset.followeeId
+            })
           })
-        })
-          .then(res => {
-            console.log(res.json());
-            onSuccess(e);
-          })
-          .catch(err => {
-            onError(err);
-          });
-      }
+            .then(res => {
+              onDELETESuccess(e);
+            })
+            .catch(err => {
+              onError(err);
+            });
+        }
 
-      function onError(err) {
-        const container = document.querySelector(".container");
-        const errorDiv = document.createElement("div");
-        const textError = document.createTextNode(err);
+        function onPOSTSuccess(e) {
+          const btn = e.target;
+          btn.innerText = "Following";
+          followingBtnListener(btn);
+        }
 
-        errorDiv.appendChild(textError);
-        container.classList.add("alert");
-        container.classList.add("alert-danger");
+        function onDELETESuccess(e) {
+          let btn = e.target;
+          btn.innerText = "Follow";
+          btn.removeEventListener("mouseover", toUnfollowAnimation);
+          btn.removeEventListener("mouseout", toFollowingAnimation);
+          btn.classList.remove("btn-danger");
+          btn.classList.add("btn-primary");
+        }
 
-        container.prepend(errorDiv);
-      }
+        function onError(err) {
+          const container = document.querySelector(".container");
+          const errorDiv = document.createElement("div");
+          const textError = document.createTextNode(err);
 
-      function followingBtnAnimation(btn) {
-        btn.addEventListener("mouseover", e => {
+          errorDiv.appendChild(textError);
+          container.classList.add("alert");
+          container.classList.add("alert-danger");
+
+          container.prepend(errorDiv);
+        }
+
+        function followingBtnListener(btn) {
+          btn.addEventListener("mouseover", toUnfollowAnimation);
+          btn.addEventListener("mouseout", toFollowingAnimation);
+        }
+
+        function toUnfollowAnimation(e) {
+          const btn = e.target;
           btn.classList.remove("btn-primary");
           btn.classList.add("btn-danger");
           btn.textContent = "Unfollow";
-        });
-        btn.addEventListener("mouseout", e => {
+        }
+
+        function toFollowingAnimation(e) {
+          const btn = e.target;
           btn.classList.remove("btn-danger");
           btn.classList.add("btn-primary");
           btn.textContent = "Following";
-        });
-      }
-
-      function onSuccess(e) {
-        e.target.innerText = "Following";
-        followingBtnAnimation(e.target);
-      }
+        }
+      })();
     </script>
   </body>
 </html>

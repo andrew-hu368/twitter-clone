@@ -94,8 +94,6 @@ public class UserDao {
 	}
 
 	public List<Object[]> searchUsers(String terms, String activeUsername) {
-
-
 		String findUsers = "SELECT matching.u_username, matching.u_name, matching.description, following.f_username "
 				+ "FROM "
 				+ "(SELECT username AS 'u_username', name AS 'u_name', description " 

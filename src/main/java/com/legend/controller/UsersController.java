@@ -98,9 +98,14 @@ public class UsersController {
 	
 	@RequestMapping(value = "/users/{username}/followees", method = RequestMethod.POST)
 	@ResponseBody
-	public FolloweeId followUser(@RequestBody FolloweeId followeeId, Followee followee) {
+	public Followee followUser(@RequestBody FolloweeId followeeId, Followee followee) {
 		followee.setFolloweeId(followeeId);
-		followeeService.persistFollowee(followee);
-		return followeeId;
+		return followeeService.persistFollowee(followee);
+	}
+	
+	@RequestMapping(value = "/users/{username}/followees", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Followee unfollowUser(@RequestBody FolloweeId followeeId) {
+		return followeeService.deleteFollowee(followeeId);
 	}
 }
