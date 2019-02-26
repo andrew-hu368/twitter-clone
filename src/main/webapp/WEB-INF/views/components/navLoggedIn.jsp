@@ -62,7 +62,7 @@
           </li>
 
           <li class="nav-item ml-3">
-            <button class="btn btn-primary">Tweet</button>
+            <button class="btn btn-primary" id="tweetBtn">Tweet</button>
           </li>
         </ul>
       </div>

@@ -30,7 +30,8 @@
         </div>
       </div>
     </main>
-
+    <jsp:include page="./components/tweetForm.jsp" />
     <jsp:include page="./components/htmlJSScript.jsp" />
+	<jsp:include page="./components/tweetFormScript.jsp" />
   </body>
 </html>

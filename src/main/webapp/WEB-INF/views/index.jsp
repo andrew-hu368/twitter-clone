@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  	<jsp:include page="./components/htmlHead.jsp" />
+    <jsp:include page="./components/htmlHead.jsp" />
     <title>Twitter. It's what's happening</title>
   </head>
   <body>
@@ -33,7 +33,11 @@
               class="mt-3 d-lg-block d-none"
               style="width: 100%; position:absolute;"
             >
-              <form action="users/login" method="POST" class="form-inline d-flex justify-content-center">
+              <form
+                action="users/login"
+                method="POST"
+                class="form-inline d-flex justify-content-center"
+              >
                 <div class="form-group mr-3">
                   <input
                     type="text"
@@ -102,6 +106,6 @@
       </footer>
     </div>
 
-	<jsp:include page="./components/htmlJSScript.jsp" />
+    <jsp:include page="./components/htmlJSScript.jsp" />
   </body>
 </html>

@@ -32,6 +32,9 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "followeeId")
 	private List<Followee> followers = new ArrayList<Followee>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "username")
+	private List<Tweet> tweets = new ArrayList<Tweet>();
 
 	public User() {
 		super();
@@ -99,6 +102,13 @@ public class User {
 		this.followers = followers;
 	}
 
+	public List<Tweet> getTweets() {
+		return tweets;
+	}
+	
+	public void setTweets(List<Tweet> tweets) {
+		this.tweets = tweets;
+	}
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", name=" + name + ", email=" + email + ", description=" + description
