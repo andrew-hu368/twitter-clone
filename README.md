@@ -7,3 +7,6 @@ twitter clone created by using spring core, mvc, jpa, hibernate, bootstrap
 - user profile/password update
 - user search
 - ajax follow user
+- post tweets
+- load tweets feed on login
+- load more tweets on scroll
