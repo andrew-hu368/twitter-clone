@@ -1,6 +1,7 @@
 package com.legend.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ public class Tweet {
 	@Column(nullable = false)
 	private String tweetContent;
 	private String parentTweet;
+	@Column(nullable = false)
+	private Date date;
 	
 	public Tweet() {
 		super();
@@ -46,9 +49,15 @@ public class Tweet {
 	public void setParentTweet(String parentTweet) {
 		this.parentTweet = parentTweet;
 	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "Tweet [tweetId=" + tweetId + ", username=" + username + ", tweetContent=" + tweetContent
-				+ ", parentTweet=" + parentTweet + "]";
+				+ ", parentTweet=" + parentTweet + ", date=" + date + "]";
 	}
 }

@@ -24,9 +24,9 @@
           })
         })
           .then(res => {
-            console.log(res.json());
             cardContainer.classList.remove("d-block");
             cardContainer.classList.add("d-none");
+            tweetContent.value = "";
           })
           .catch(err => {
             console.log(err);

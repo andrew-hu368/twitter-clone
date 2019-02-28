@@ -9,7 +9,6 @@
     <jsp:include page="./components/navLoggedIn.jsp" />
     <main>
       <div class="container">
-        <h1>You are logged in!</h1>
         <div class="row">
           <div class="col-lg-4">
             <h6>${activeUser.name}</h6>
@@ -25,13 +24,14 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4"></div>
+          <div class="col-lg-4" id="tweetsCol"></div>
           <div class="col-lg-4"></div>
         </div>
       </div>
     </main>
     <jsp:include page="./components/tweetForm.jsp" />
     <jsp:include page="./components/htmlJSScript.jsp" />
-	<jsp:include page="./components/tweetFormScript.jsp" />
+    <jsp:include page="./components/tweetFormScript.jsp" />
+    <jsp:include page="./components/fetchTweetsScript.jsp" />
   </body>
 </html>

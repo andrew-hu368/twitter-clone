@@ -1,6 +1,5 @@
 package com.legend.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -12,10 +11,10 @@ import com.legend.model.UserProfileDetails;
 public class IndexController {
 
 	@RequestMapping("/")
-	public String displayIndex(HttpServletRequest req) {
-		HttpSession session = req.getSession();
+	public String displayIndex(HttpSession session) {
 		UserProfileDetails activeUser = (UserProfileDetails) session.getAttribute("activeUser");
 		if(activeUser != null) {
+			session.setAttribute("tweetFeedOffset", 0);
 			return "indexLoggedIn";
 		}
 		return "index";

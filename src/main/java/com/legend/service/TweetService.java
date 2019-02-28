@@ -1,5 +1,8 @@
 package com.legend.service;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +17,11 @@ public class TweetService {
 	private TweetDao tweetDao;
 	
 	public Tweet persistTweet(Tweet tweet) {
+		tweet.setDate(new Date());
 		return tweetDao.persistTweet(tweet);
+	}
+
+	public List<Object[]> getUserTweets(String username, int tweetFeedOffset) {
+		return tweetDao.getUserTweets(username, tweetFeedOffset);
 	}
 }

@@ -1,11 +1,14 @@
 package com.legend.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +20,7 @@ import com.legend.model.FolloweeId;
 import com.legend.model.User;
 import com.legend.model.UserProfileDetails;
 import com.legend.service.FolloweeService;
+import com.legend.service.TweetService;
 import com.legend.service.UserService;
 
 @Controller
@@ -26,6 +30,8 @@ public class UsersController {
 	private UserService userService;
 	@Resource(name = "followeeService")
 	private FolloweeService followeeService;
+	@Resource(name = "tweetService")
+	private TweetService tweetService;
 
 	@RequestMapping(value = "/users/signup", method = RequestMethod.GET)
 	public String displaySignUpPage(Model model, User user) {
@@ -107,5 +113,18 @@ public class UsersController {
 	@ResponseBody
 	public Followee unfollowUser(@RequestBody FolloweeId followeeId) {
 		return followeeService.deleteFollowee(followeeId);
+	}
+	
+	@RequestMapping(value = "/users/{username}/tweets", method = RequestMethod.GET)
+	@ResponseBody 
+	public List<Object[]> getUserTweetFeed(@PathVariable String username, HttpSession session) {
+		int tweetFeedOffset = session.getAttribute("tweetFeedOffset") != null ? (int) session.getAttribute("tweetFeedOffset") : 0;
+		List<Object[]> tweetFeed = tweetService.getUserTweets(username, tweetFeedOffset);
+		System.out.println(tweetFeed);
+		if(tweetFeed.size() > 0) {
+			session.setAttribute("tweetFeedOffset", tweetFeedOffset + 5);
+		}
+		System.out.println(session.getAttribute("tweetFeedOffset"));
+		return tweetFeed;
 	}
 }
